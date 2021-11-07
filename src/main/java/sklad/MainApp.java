@@ -29,7 +29,10 @@ public class MainApp {
 
        Date date =  new Date();
           Order order = new Order("test test",150.70,"Spracovane",users.get(2),date,map);
-       orderDao.createOrder(order);
+      // orderDao.createOrder(order);
     //    System.out.println(orderDao.getIdFromOrder(order));
+        List<Order> orderList = orderDao.getAll();
+       // System.out.println(orderList);
+        System.out.println( productDao.getbyId(1L));
     }
 }

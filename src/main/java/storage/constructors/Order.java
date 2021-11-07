@@ -1,6 +1,7 @@
 package storage.constructors;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ public class Order {
     private String OrderStatus;
     private User SalesMan;
     private Date DateTime;
-    private Map<Product, Integer> productsInOrder;
+    private Map<Product, Integer> productsInOrder = new HashMap<>();
 
 
     public Order(String name, double summ, String orderStatus, User salesMan, Date dateTime, Map<Product, Integer> productsInOrder) {

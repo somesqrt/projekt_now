@@ -4,11 +4,12 @@ import storage.constructors.Order;
 import storage.constructors.Product;
 
 import java.util.List;
+import java.util.Map;
 
 public interface OrderDao {
     List<Order> getAll();
     Order createOrder(Order order);
-    List<Product> getProductInOrder(Order order);
+    Map<Product, Integer> getProductInOrder(Order order);
     Order update(Order order);
     Order getIdFromOrder(Order order);
 

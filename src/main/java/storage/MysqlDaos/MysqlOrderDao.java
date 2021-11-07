@@ -3,24 +3,21 @@ package storage.MysqlDaos;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+
 import org.springframework.jdbc.core.RowMapper;
 import storage.DaoFactory;
 import storage.EntityNotFoundException;
-import storage.constructors.Categories;
+
 import storage.constructors.Order;
-import storage.constructors.Position;
+
 import storage.constructors.Product;
-import storage.daos.CategoriesDAO;
+
 import storage.daos.OrderDao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class MysqlOrderDao implements OrderDao {
     private JdbcTemplate jdbcTemplate;
@@ -52,11 +49,12 @@ public class MysqlOrderDao implements OrderDao {
 
                     if (rs.getString("product_name") == null) {
                         continue;
-                    }
-                    Long idproduct = rs.getLong("idProduct");
-                    int count = rs.getInt("count");
-                    order.getProductsInOrder().put(DaoFactory.INSTANCE.getProductDao().getbyId(idproduct), count);
+                    }else {
+                        Long idproduct = rs.getLong("idProduct");
+                        int count = rs.getInt("count");
+                        order.getProductsInOrder().put(DaoFactory.INSTANCE.getProductDao().getbyId(idproduct),count);
 
+                    }
                 }
                 return orderList;
             }
@@ -84,13 +82,32 @@ public class MysqlOrderDao implements OrderDao {
     }
 
     @Override
-    public List<Product> getProductInOrder(Order order) {
-        return null;
+    public Map<Product,Integer> getProductInOrder(Order order) {
+        String sql = "SELECT * FROM paz1c_project.productsinorder where idOrder ="+order.getIdOrder();
+        Map<Product,Integer> map = new HashMap<>();
+        return jdbcTemplate.queryForObject(sql, new RowMapper<Map<Product,Integer>>() {
+            @Override
+            public Map<Product,Integer> mapRow(ResultSet rs, int rowNum) throws SQLException {
+               Long idProducts = rs.getLong("idProducts");
+               int count = rs.getInt("count");
+              map.put(DaoFactory.INSTANCE.getProductDao().getbyId(idProducts),count);
+              return map;
+            }
+        });
     }
 
     @Override
     public Order update(Order order) {
-        return null;
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd H:mm:ss", Locale.ENGLISH);
+        String sql = "UPDATE `paz1c_project`.`order` SET `Name` = ?, `Summ` = ?, `OrderStatus` = ?, `SalesMan` = ?, `DateTime` = ?> WHERE `idOrder` = ?;";
+        int pocet = jdbcTemplate.update(sql,order.getName(),order.getSumm(),order.getOrderStatus(),order.getSalesMan().getIdUser(),formatter.format(order.getDateTime()),order.getIdOrder());
+        if(pocet == 1)
+        {
+            return order;
+        }
+        else {
+            throw new EntityNotFoundException("chyba updatumu");
+        }
     }
 
     @Override
