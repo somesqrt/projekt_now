@@ -1,5 +1,9 @@
 package storage.constructors;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 public class Position {
     private Long idPosiiton;
     private int floor;
@@ -9,6 +13,7 @@ public class Position {
     private double weight;
     private double length;
     private double BearingCapacity;
+    private Map<Product,Integer> products =new HashMap<>();
 
     public Position(Long idPosiiton, int floor, int positionNumber, String shelf, double height, double weight, double length, double bearingCapacity) {
         this.idPosiiton = idPosiiton;
@@ -19,6 +24,26 @@ public class Position {
         this.weight = weight;
         this.length = length;
         BearingCapacity = bearingCapacity;
+    }
+
+    public Position(Long idPosiiton, int floor, int positionNumber, String shelf, double height, double weight, double length, double bearingCapacity, Map<Product,Integer> products) {
+        this.idPosiiton = idPosiiton;
+        this.floor = floor;
+        this.positionNumber = positionNumber;
+        this.shelf = shelf;
+        this.height = height;
+        this.weight = weight;
+        this.length = length;
+        BearingCapacity = bearingCapacity;
+        this.products = products;
+    }
+
+    public Map<Product,Integer> getProducts() {
+        return products;
+    }
+
+    public void setProducts(Map<Product,Integer> products) {
+        this.products = products;
     }
 
     public Long getIdPosiiton() {
@@ -87,7 +112,7 @@ public class Position {
 
     @Override
     public String toString() {
-        return "Position{" +
+        return "\nPosition{" +
                 "idPosiiton=" + idPosiiton +
                 ", floor=" + floor +
                 ", positionNumber=" + positionNumber +
@@ -96,7 +121,7 @@ public class Position {
                 ", weight=" + weight +
                 ", length=" + length +
                 ", BearingCapacity=" + BearingCapacity +
-                '}'+"\n";
-
+                ", products=" + products +
+                '}';
     }
 }

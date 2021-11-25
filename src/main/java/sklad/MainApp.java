@@ -2,6 +2,7 @@ package sklad;
 
 import storage.*;
 import storage.constructors.Order;
+import storage.constructors.Position;
 import storage.constructors.Product;
 import storage.constructors.User;
 import storage.daos.*;
@@ -19,20 +20,9 @@ public class MainApp {
        RoleDao roleDao  =DaoFactory.INSTANCE.getRoleDao();
        CategoriesDAO categoriesDAO = DaoFactory.INSTANCE.getcategoriesDAO();
        OrderDao orderDao = DaoFactory.INSTANCE.getorderDao();
+        PositionDao positionDao = DaoFactory.INSTANCE.getPositionDao();
+      List<Product> productList = productDao.getAll();
+      List<Position> positionList = positionDao.getAll();
 
-       List<User> users = userDao.getAll();
-      List<Product> products = productDao.getAll();
-        Map<Product,Integer> map = new HashMap<>();
-        map.put(products.get(0),1);
-        map.put(products.get(15),100);
-
-
-       Date date =  new Date();
-          Order order = new Order("test test",150.70,"Spracovane",users.get(2),date,map);
-      // orderDao.createOrder(order);
-    //    System.out.println(orderDao.getIdFromOrder(order));
-        List<Order> orderList = orderDao.getAll();
-       // System.out.println(orderList);
-        System.out.println( productDao.getbyId(1L));
     }
 }
